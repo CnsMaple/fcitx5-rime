@@ -9,6 +9,7 @@
 #include "rimeaction.h"
 #include "rimestate.h"
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <ctime>
 #include <dirent.h>
@@ -249,6 +250,13 @@ void RimeEngine::rimeStart(bool fullcheck) {
     auto userDir =
         StandardPaths::global().userDirectory(StandardPathsType::PkgData) /
         "rime";
+    // Allow overriding the rime user data dir via env (set by the app when the
+    // user picks a custom folder). Falls back to the default PkgData/rime.
+    if (const char *envDir = getenv("FCITX_RIME_USER_DATA_DIR")) {
+        if (envDir[0] != '\0') {
+            userDir = envDir;
+        }
+    }
     RIME_DEBUG() << "Rime data directory: " << userDir;
     if (!fs::makePath(userDir)) {
         if (!fs::isdir(userDir)) {
