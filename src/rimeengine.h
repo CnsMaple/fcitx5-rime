@@ -106,6 +106,10 @@ FCITX_CONFIGURATION(
                                         .string(),
                                     "\"", "\"\"\""),
             "\"")};
+    // WebDAV sync config lives on a dedicated page in the host app; only the
+    // entry point is exposed here.
+    ExternalOption webDavSync{this, "WebDavSync", _("WebDAV sync config"),
+                              "xdg-open ."};
     fcitx::Option<fcitx::KeyList> deploy{
         this, "Deploy", _("Deploy"),
         isApple() ? fcitx::KeyList{fcitx::Key("Control+Alt+grave")}
