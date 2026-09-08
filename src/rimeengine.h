@@ -55,13 +55,13 @@ class RimeOptionAction;
 enum class SharedStatePolicy { FollowGlobalConfig, All, Program, No };
 
 FCITX_CONFIG_ENUM_NAME_WITH_I18N(SharedStatePolicy,
-                                 N_("Follow Global Configuration"), N_("All"),
-                                 N_("Program"), N_("No"));
+                                 N_("跟随全局配置"), N_("全部"),
+                                 N_("程序"), N_("无"));
 
 enum class PreeditMode { No, ComposingText, CommitPreview };
 
-FCITX_CONFIG_ENUM_NAME_WITH_I18N(PreeditMode, N_("Do not show"),
-                                 N_("Composing text"), N_("Commit preview"))
+FCITX_CONFIG_ENUM_NAME_WITH_I18N(PreeditMode, N_("不显示"),
+                                 N_("组合文本"), N_("提交预览"))
 
 enum class SwitchInputMethodBehavior {
     Clear,
@@ -70,34 +70,34 @@ enum class SwitchInputMethodBehavior {
     CommitCommitPreview
 };
 
-FCITX_CONFIG_ENUM_NAME_WITH_I18N(SwitchInputMethodBehavior, N_("Clear"),
-                                 N_("Commit raw input"),
-                                 N_("Commit composing text"),
-                                 N_("Commit commit preview"))
+FCITX_CONFIG_ENUM_NAME_WITH_I18N(SwitchInputMethodBehavior, N_("清除"),
+                                 N_("提交原始输入"),
+                                 N_("提交组合文本"),
+                                 N_("提交上屏预览"))
 
 FCITX_CONFIGURATION(
     RimeEngineConfig,
     OptionWithAnnotation<PreeditMode, PreeditModeI18NAnnotation> preeditMode{
-        this, "PreeditMode", _("Preedit Mode"),
+        this, "PreeditMode", _("预编辑模式"),
         isAndroid() ? PreeditMode::No : PreeditMode::ComposingText};
     OptionWithAnnotation<SharedStatePolicy, SharedStatePolicyI18NAnnotation>
-        sharedStatePolicy{this, "InputState", _("Shared Input State"),
+        sharedStatePolicy{this, "InputState", _("共享输入状态"),
                           SharedStatePolicy::All};
     // On Linux only cursor position is available so this pins candidate window
     // while typing. On macOS any position within embedded preedit is available
     // so this is unnecessary. On Android there is no candidate window yet.
     Option<bool> preeditCursorPositionAtBeginning{
         this, "PreeditCursorPositionAtBeginning",
-        _("Fix embedded preedit cursor at the beginning of the preedit"),
+        _("将内嵌预编辑光标固定在预编辑开头"),
         !isAndroid() && !isApple() && !isEmscripten()};
     OptionWithAnnotation<SwitchInputMethodBehavior,
                          SwitchInputMethodBehaviorI18NAnnotation>
         switchInputMethodBehavior{
             this, "SwitchInputMethodBehavior",
-            _("Action when switching input method"),
+            _("切换输入法时的操作"),
             SwitchInputMethodBehavior::CommitCommitPreview};
     ExternalOption userDataDir{
-        this, "UserDataDir", _("User data dir"),
+        this, "UserDataDir", _("用户数据目录"),
         stringutils::concat(
             "xdg-open \"",
             stringutils::replaceAll((StandardPaths::global().userDirectory(
@@ -108,14 +108,14 @@ FCITX_CONFIGURATION(
             "\"")};
     // WebDAV sync config lives on a dedicated page in the host app; only the
     // entry point is exposed here.
-    ExternalOption webDavSync{this, "WebDavSync", _("WebDAV sync config"),
+    ExternalOption webDavSync{this, "WebDavSync", _("WebDAV 同步配置"),
                               "xdg-open ."};
     fcitx::Option<fcitx::KeyList> deploy{
-        this, "Deploy", _("Deploy"),
+        this, "Deploy", _("部署"),
         isApple() ? fcitx::KeyList{fcitx::Key("Control+Alt+grave")}
                   : fcitx::KeyList{}};
     fcitx::Option<fcitx::KeyList> synchronize{
-        this, "Synchronize", _("Synchronize"), {}};);
+        this, "Synchronize", _("同步"), {}};);
 
 class RimeEngine final : public InputMethodEngineV2 {
 public:
